@@ -8,13 +8,13 @@ pipeline {
     stages {
         stage('git-checkout') {
             steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/jaiswaladi246/to-do-app.git'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/KahafSameer/to-do-app-cicd-pipeline'
             }
         }
 
     stage('Sonar Analysis') {
             steps {
-                   sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=URL_OF_SONARQUBE -Dsonar.login=TOKEN_OF_SONARQUBE -Dsonar.projectName=to-do-app \
+                   sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=http://13.53.38.49:9000/ -Dsonar.login=squ_81280030e9f37e4a3b34ce838e41b58feca51483 -Dsonar.projectName=to-do-app \
                    -Dsonar.sources=. \
                    -Dsonar.projectKey=to-do-app '''
                }
