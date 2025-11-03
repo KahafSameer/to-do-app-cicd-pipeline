@@ -31,33 +31,26 @@ pipeline {
          stage('Docker Build') {
             steps {
                script{
-                   withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
-                    sh "docker build -t  todoapp:latest -f docker/Dockerfile . "
-                    sh "docker tag todoapp:latest username/todoapp:latest "
-                 }
+                   withDockerRegistry(credentialsId: 'affd8909-e248-4c9a-ac2a-fc05a84eea5a') {
+                    sh "docker build -t  todoapp:latest -f backend/Dockerfile ."
+                    sh "docker tag todoapp:latest kahafsameer/todoapp:latest "
+                    sh "docker push  kahafsameer/todoapp:latest "
+                }
                }
             }
         }
 
-        stage('Docker Push') {
-            steps {
-               script{
-                   withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
-                    sh "docker push  username/todoapp:latest "
-                 }
-               }
-            }
-        }
+       
         stage('trivy') {
             steps {
-               sh " trivy username/todoapp:latest"
+               sh " trivy image kahafsameer/todoapp:latest "
             }
         }
 		stage('Deploy to Docker') {
             steps {
                script{
-                   withDockerRegistry(credentialsId: '9ea0c4b0-721f-4219-be62-48a976dbeec0') {
-                    sh "docker run -d --name to-do-app -p 4000:4000 username/todoapp:latest "
+                    withDockerRegistry(credentialsId: 'affd8909-e248-4c9a-ac2a-fc05a84eea5a') {
+                    sh "docker run -d --name to-do-app -p 3000:3000 kahafsameer/todoapp:latest "
                  }
                }
             }
